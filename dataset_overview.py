@@ -13,3 +13,10 @@ df.to_csv("data/netflix_sample.csv", index=False)
 print(df.head())
 print("Number of rows:", df.shape[0])
 print("Number of columns:", df.shape[1])
+print("Column names:", df.columns.tolist())
+
+# Check the number of missing values in each column
+print(df.isnull().sum())
+
+# Check the number of duplicate rows
+print("Number of duplicate rows:", df.duplicated().sum())
