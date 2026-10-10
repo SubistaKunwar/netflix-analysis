@@ -2,45 +2,42 @@
 
 ## About the Project
 
-For my capstone project, I chose to work with the Netflix Movies and TV Shows dataset. I wanted to explore a real-world dataset and learn how to use Python and SQL to understand data and find useful information from it.
+In this project, I am working with the Netflix Movies and TV Shows dataset to learn more about data analysis using Python and SQL.
 
-The dataset contains information about movies and TV shows available on Netflix, including their titles, directors, cast, countries, release years, ratings, and genres.
+The dataset contains information about Netflix movies and TV shows, including their titles, directors, countries, release years, ratings, and genres.
 
-Through this project, I plan to explore the dataset, identify missing values, clean the data where necessary, and answer different questions using data analysis and SQL queries.
+I am currently working with a sample of 2,000 rows to make it easier to explore and understand the data. I will use Python and Pandas to explore and clean the data, then use SQL to find useful insights.
 
 ## Dataset
 
-- **Dataset name:** Netflix Movies and TV Shows
+- **Dataset:** Netflix Movies and TV Shows
 - **Source:** Kaggle
-- **Dataset link:** https://www.kaggle.com/datasets/shivamb/netflix-shows
-- **File name:** `netflix_titles.csv`
-- **Total records:** 8,807
-- **Total columns:** 12
+- **Link:** https://www.kaggle.com/datasets/shivamb/netflix-shows
+- **Original dataset:** 8,807 rows and 12 columns
+- **Working sample:** 2,000 rows
 
-## Tools and Technologies
+## Tools Used
 
-- **Python:** For exploring and analyzing the data.
-- **Pandas:** For handling and cleaning the dataset.
-- **SQL:** For querying the data and finding useful insights.
-- **GitHub:** For maintaining the project and tracking my progress.
+- Python
+- Pandas
+- SQL
+- Git and GitHub
 
 ## Project Goals
 
-The main goals of this project are to:
-
-- Understand the structure of the Netflix dataset.
-- Identify and handle missing or inconsistent data.
-- Explore the differences between movies and TV shows.
-- Find patterns related to release years, countries, ratings, and genres.
-- Use SQL queries to answer analytical questions.
-- Organize the data into database tables and practice working with relationships between tables.
+- Understand the dataset and its columns.
+- Find missing values and duplicate records.
+- Clean the data where needed.
+- Explore movies and TV shows by genre, country, release year, and rating.
+- Use SQL queries to find useful information.
+- Learn how to store and organize data in a database.
 
 ## Current Progress
 
-I have downloaded the dataset and started exploring it using Python and Pandas. So far, I have checked the dataset structure and displayed the first few records to understand what information it contains.
+I have downloaded the dataset and started exploring it using Python and Pandas. I have also created a sample of 2,000 rows to use for my analysis.
 
-I will continue working on the project step by step, starting with data exploration and cleaning before moving on to database design and SQL analysis.
+I will continue working on the project step by step, starting with understanding the data and checking its quality before moving on to data cleaning and SQL analysis.
 
 ## What I Hope to Learn
 
-By completing this project, I hope to improve my practical skills in Python, data cleaning, SQL, and database management. I also want to gain more experience working with a real dataset and presenting findings in a clear and meaningful way.
+Through this project, I hope to improve my skills in Python, data cleaning, data analysis, and SQL by working with a real dataset.
