@@ -1,91 +1,77 @@
 
 import pandas as pd
+from pathlib import Path
 
-# Load the original dataset
-df = pd.read_csv("netflix_titles.csv")
+Path("data").mkdir(exist_ok=True)
 
-# Select the first 2,000 rows
-df = df.head(2000)
+# Read the Netflix dataset
+original_df = pd.read_csv("netflix_titles.csv")
 
-# Save the sample dataset
+# Use 2000 records for the project
+df = original_df.head(2000).copy()
+
 df.to_csv("data/netflix_sample.csv", index=False)
 
-print(df.head())
-print("Number of rows:", df.shape[0])
-print("Number of columns:", df.shape[1])
-print("Column names:", df.columns.tolist())
+print("Original records:", len(original_df))
+print("Records used in project:", len(df))
+print("Number of columns:", len(df.columns))
 
-# Check the number of missing values in each column
+print("\nFirst five records:")
+print(df.head())
+
+print("\nColumn names:")
+print(df.columns.tolist())
+
+print("\nMissing values:")
 print(df.isnull().sum())
 
-# Check the number of duplicate rows
-print("Number of duplicate rows:", df.duplicated().sum())
+print("\nMissing values percentage:")
+print(((df.isnull().sum() / len(df)) * 100).round(2))
 
+print("\nDuplicate rows:", df.duplicated().sum())
+print("Duplicate show IDs:", df["show_id"].duplicated().sum())
 
-# Display rows where the director is missing
+print("\nRecords with missing directors:")
 missing_directors = df[df["director"].isnull()]
 print(missing_directors[["title", "type", "director"]].head(10))
 
-
-# Calculate missing values as percentages
-missing_percentage = (df.isnull().sum() / len(df)) * 100
-
-print("\nMissing values percentage:")
-print(missing_percentage.round(2))
-
-
-# Check data types of each column
 print("\nData types:")
 print(df.dtypes)
 
-# Check for duplicate show IDs
-print("\nDuplicate show IDs:", df["show_id"].duplicated().sum())
-
-
-# Check the unique values in the type column
-print("\nUnique content types:")
+print("\nContent types:")
 print(df["type"].unique())
 
-
-# Check unique content ratings
-print("\nUnique content ratings:")
+print("\nContent ratings:")
 print(df["rating"].unique())
 
+print("\nSample durations:")
+print(df["duration"].dropna().unique()[:20])
 
-# Check unique duration values
-print("\nSample duration values:")
-print(df["duration"].unique()[:20])
-
-# Check sample date values
-print("\nSample date_added values:")
-print(df["date_added"].head(10))
-
-# Check blank or whitespace-only values in text columns
 print("\nBlank text values:")
-for column in df.select_dtypes(include=["str"]).columns:
+for column in df.select_dtypes(include=["object", "string"]).columns:
     blank_count = df[column].str.strip().eq("").sum()
     print(column, ":", blank_count)
 
-# Check release year range
 print("\nEarliest release year:", df["release_year"].min())
 print("Latest release year:", df["release_year"].max())
 
-# Check missing durations
-print("\nMissing duration values:", df["duration"].isnull().sum())
-# Convert date_added from text to datetime format
+print("\nMissing durations:", df["duration"].isnull().sum())
+
 df["date_added"] = pd.to_datetime(
     df["date_added"].str.strip(),
     format="%B %d, %Y",
     errors="coerce"
 )
 
-print("\nDate column after conversion:")
+print("\nDates after conversion:")
 print(df["date_added"].head(10))
 
-print("\nInvalid or missing dates after conversion:")
+print("\nMissing dates after conversion:")
 print(df["date_added"].isnull().sum())
 
-# Save the cleaned dataset
-df.to_csv("data/netflix_cleaned.csv", index=False)
+print("\nMovies and TV shows:")
+print(df["type"].value_counts())
 
-print("\nCleaned dataset saved successfully.")
+df.to_csv("data/netflix_processed.csv", index=False)
+
+print("\nProcessed data saved successfully.")
