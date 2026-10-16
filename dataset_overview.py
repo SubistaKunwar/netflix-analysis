@@ -2,76 +2,41 @@
 import pandas as pd
 from pathlib import Path
 
-Path("data").mkdir(exist_ok=True)
+# Read the 2000 records selected for the project
+df = pd.read_csv("data/netflix_sample.csv")
 
-# Read the Netflix dataset
-original_df = pd.read_csv("netflix_titles.csv")
+print("Dataset before cleaning:", df.shape)
 
-# Use 2000 records for the project
-df = original_df.head(2000).copy()
-
-df.to_csv("data/netflix_sample.csv", index=False)
-
-print("Original records:", len(original_df))
-print("Records used in project:", len(df))
-print("Number of columns:", len(df.columns))
-
-print("\nFirst five records:")
-print(df.head())
-
-print("\nColumn names:")
-print(df.columns.tolist())
-
-print("\nMissing values:")
+# Check missing values before cleaning
+print("\nMissing values before cleaning:")
 print(df.isnull().sum())
 
-print("\nMissing values percentage:")
-print(((df.isnull().sum() / len(df)) * 100).round(2))
+# Remove duplicate records
+df = df.drop_duplicates()
 
-print("\nDuplicate rows:", df.duplicated().sum())
-print("Duplicate show IDs:", df["show_id"].duplicated().sum())
+# Remove extra spaces from text columns
+for column in df.select_dtypes(include="object").columns:
+    df[column] = df[column].str.strip()
 
-print("\nRecords with missing directors:")
-missing_directors = df[df["director"].isnull()]
-print(missing_directors[["title", "type", "director"]].head(10))
+# Fill missing values for text columns
+df["director"] = df["director"].fillna("Unknown")
+df["cast"] = df["cast"].fillna("Unknown")
+df["country"] = df["country"].fillna("Unknown")
 
-print("\nData types:")
-print(df.dtypes)
-
-print("\nContent types:")
-print(df["type"].unique())
-
-print("\nContent ratings:")
-print(df["rating"].unique())
-
-print("\nSample durations:")
-print(df["duration"].dropna().unique()[:20])
-
-print("\nBlank text values:")
-for column in df.select_dtypes(include=["object", "string"]).columns:
-    blank_count = df[column].str.strip().eq("").sum()
-    print(column, ":", blank_count)
-
-print("\nEarliest release year:", df["release_year"].min())
-print("Latest release year:", df["release_year"].max())
-
-print("\nMissing durations:", df["duration"].isnull().sum())
-
+# Convert date_added into a proper date format
 df["date_added"] = pd.to_datetime(
-    df["date_added"].str.strip(),
+    df["date_added"],
     format="%B %d, %Y",
     errors="coerce"
 )
 
-print("\nDates after conversion:")
-print(df["date_added"].head(10))
+print("\nMissing values after cleaning:")
+print(df.isnull().sum())
 
-print("\nMissing dates after conversion:")
-print(df["date_added"].isnull().sum())
+print("\nDataset after cleaning:", df.shape)
 
-print("\nMovies and TV shows:")
-print(df["type"].value_counts())
+# Save the cleaned dataset
+Path("data").mkdir(exist_ok=True)
+df.to_csv("data/netflix_cleaned.csv", index=False)
 
-df.to_csv("data/netflix_processed.csv", index=False)
-
-print("\nProcessed data saved successfully.")
+print("\nCleaned dataset saved to data/netflix_cleaned.csv")
