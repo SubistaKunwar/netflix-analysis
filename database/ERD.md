@@ -1,33 +1,66 @@
 
-# Netflix Database Entity Relationship Diagram (ERD)
+# Netflix ETL Project — Entity Relationship Diagram
 
-## Overview
-
-This diagram shows the relationships between Netflix titles, countries, genres, and directors in the relational database.
+This diagram shows how Netflix titles are connected to countries, genres, and directors in the relational database.
 
 ```mermaid
 erDiagram
-    titles ||--o{ title_countries : has
-    countries ||--o{ title_countries : links
-    titles ||--o{ title_genres : has
-    genres ||--o{ title_genres : links
-    titles ||--o{ title_directors : has
-    directors ||--o{ title_directors : links
+    TITLES {
+        string show_id PK
+        string type
+        string title
+        string date_added
+        int release_year
+        string rating
+        string duration
+        string description
+    }
+
+    COUNTRIES {
+        int country_id PK
+        string country_name
+    }
+
+    TITLE_COUNTRIES {
+        string show_id PK, FK
+        int country_id PK, FK
+    }
+
+    GENRES {
+        int genre_id PK
+        string genre_name
+    }
+
+    TITLE_GENRES {
+        string show_id PK, FK
+        int genre_id PK, FK
+    }
+
+    DIRECTORS {
+        int director_id PK
+        string director_name
+    }
+
+    TITLE_DIRECTORS {
+        string show_id PK, FK
+        int director_id PK, FK
+    }
+
+    TITLES ||--o{ TITLE_COUNTRIES : has
+    COUNTRIES ||--o{ TITLE_COUNTRIES : includes
+
+    TITLES ||--o{ TITLE_GENRES : has
+    GENRES ||--o{ TITLE_GENRES : categorizes
+
+    TITLES ||--o{ TITLE_DIRECTORS : has
+    DIRECTORS ||--o{ TITLE_DIRECTORS : directs
 ```
 
-## Table Descriptions
+## Relationships
 
-- **titles:** Stores Netflix title details, including type, title, release year, rating, duration, and description.
-- **countries:** Stores unique country names.
-- **title_countries:** Links titles to their countries.
-- **genres:** Stores unique genre names.
-- **title_genres:** Links titles to their genres.
-- **directors:** Stores unique director names.
-- **title_directors:** Links titles to their directors.
-
-## Keys and Relationships
-
-- **PK (Primary Key):** Uniquely identifies a record.
-- **FK (Foreign Key):** Connects a record to another table.
-- A title can be associated with multiple countries, genres, and directors.
-- The linking tables represent these many-to-many relationships.
+- **Titles and Countries:** A title can be associated with multiple countries.
+- **Titles and Genres:** A title can belong to multiple genres.
+- **Titles and Directors:** A title can have multiple directors.
+- **Junction tables:** These connect titles with countries, genres, and directors.
+- **Primary keys (PK):** Uniquely identify records.
+- **Foreign keys (FK):** Connect related records between tables.
